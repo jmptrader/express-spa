@@ -1,0 +1,26 @@
+{
+  "name": "express-spa",
+  "version": "0.0.0",
+  "description": "An Express Server specifically for SPAs with Webpack and Typescript support.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://erikakers@github.com/erikakers/express-spa.git"
+  },
+  "keywords": [
+    "Express",
+    "Node",
+    "SPA",
+    "Typescript",
+    "Webpack"
+  ],
+  "author": "Erik Akers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/erikakers/express-spa/issues"
+  },
+  "homepage": "https://github.com/erikakers/express-spa#readme"
+}
