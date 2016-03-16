@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+require('dotenv/config');
+
+require('babel-core').transform('code', {
+    presets: [
+        'es2015',
+        'stage-3'
+    ]
+});
+
+if(process.env.NODE_ENV === 'production') {
+  require('../app');
+} else {
+  require('../development');
+}
