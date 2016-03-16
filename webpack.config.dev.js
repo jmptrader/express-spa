@@ -9,7 +9,7 @@ module.exports = {
     ],
     resolve: {
         alias: {
-            components: path.resolve(__dirname, 'client', 'components');
+            components: path.resolve(__dirname, 'client/components')
         },
         extensions: ['', '.js', '.ts']
     },
