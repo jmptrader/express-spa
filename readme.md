@@ -5,6 +5,6 @@ React, or something else it just provides a simple Express server that can be us
 in both development and production for any Single Page Apps.
 
 ## Routing
-Express SPA sends all traffic `dist/index.html` with the assumption that that SPA
+Express SPA sends all traffic `public/index.html` with the assumption that that SPA
 will handle all routing for the app. This also allows use of pretty, non-hashed,
 URLs by default.
