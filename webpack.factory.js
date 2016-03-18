@@ -20,7 +20,7 @@ module.exports = function(options) {
  */
 function entry(options) {
     var files = [
-        './src/index'
+        './client/index'
     ];
 
     if (options.env === 'development') {
