@@ -8,13 +8,13 @@ import webpack from 'webpack';
 const app = express();
 const http = require('http').Server(app);
 const port = process.env.PORT || 5000;
-const config = require('./webpack.config.dev');
-const compiler = webpack(config);
+const factory = require('./webpack.factory');
+const compiler = webpack(factory(process.env.NODE_ENV));
 
 app.use(morgan('dev'));
 
 app.use(require('webpack-dev-middleware')(compiler, {
-    publicPath: config.output.publicPath,
+    publicPath: '/assets/',
     stats: {
         colors: true,
         hash: false,
