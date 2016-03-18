@@ -2,7 +2,6 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = function(options) {
-
     return {
         entry: entry(options),
         resolve: resolve(options),
@@ -32,9 +31,16 @@ function entry(options) {
 
 /*
     Returns Webpack Resolve Object configuation
+    TODO: Globbing directories in the clients folder to the alias object so
+    webpack and resolve them automatically.
  */
 function resolve(options) {
+    var aliases = {};
+
+    // aliases[folder] = path.join(__dirname, 'path', 'to', 'folder');
+
     return {
+        alias: aliases,
         extensions: ['', '.js', '.ts']
     }
 }
@@ -75,6 +81,8 @@ function plugins(options) {
 
 /*
     Returns Loaders Objects
+    Typescript is enabled by default
+    Babel Preset are defined in the package.json file.
  */
 function loaders(options) {
     var loaders = [];
