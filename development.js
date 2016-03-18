@@ -9,7 +9,10 @@ const app = express();
 const http = require('http').Server(app);
 const port = process.env.PORT || 5000;
 const factory = require('./webpack.factory');
-const compiler = webpack(factory(process.env.NODE_ENV));
+const compiler = webpack(factory({
+    env: process.env.NODE_ENV,
+    typescript: true
+}));
 
 app.use(morgan('dev'));
 
