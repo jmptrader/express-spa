@@ -7,7 +7,7 @@ module.exports = function(env) {
         devtool: 'cheap-module-eval-source-map',
         entry: [
             'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true',
-            './client/index'
+            './src/index'
         ],
         resolve: {
             alias: {
@@ -22,6 +22,7 @@ module.exports = function(env) {
         },
         plugins: [
             new webpack.optimize.CommonsChunkPlugin('commons', 'commons.js'),
+            new webpack.optimize.OccurenceOrderPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoErrorsPlugin()
         ],
