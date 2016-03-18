@@ -14,7 +14,7 @@ const compiler = webpack(factory({
     typescript: true
 }));
 
-app.use(morgan('dev'));
+app.use(morgan(process.env.MORGAN));
 
 app.use(require('webpack-dev-middleware')(compiler, {
     publicPath: '/assets/',
