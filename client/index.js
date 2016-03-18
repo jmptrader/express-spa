@@ -1,4 +1,13 @@
-document.write('Hello Webpack testing');
+document.write('Hello Webpack');
 
-console.log('hot reloading');
-console.log('testing 1');
+console.log('hot reloading test');
+console.log('testing hot');
+
+
+
+// DO NOT REMOVE
+// Needed for Hot Reloading
+// TODO: Should only working when ENV is development
+if (module.hot) {
+  module.hot.accept();
+}

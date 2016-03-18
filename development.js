@@ -8,13 +8,16 @@ import webpack from 'webpack';
 const app = express();
 const http = require('http').Server(app);
 const port = process.env.PORT || 5000;
-const config = require('./webpack.config.dev');
-const compiler = webpack(config);
+const factory = require('./webpack.factory');
+const compiler = webpack(factory({
+    env: process.env.NODE_ENV,
+    typescript: true
+}));
 
-app.use(morgan('dev'));
+app.use(morgan(process.env.MORGAN));
 
 app.use(require('webpack-dev-middleware')(compiler, {
-    publicPath: config.output.publicPath,
+    publicPath: '/assets/',
     stats: {
         colors: true,
         hash: false,
@@ -25,7 +28,11 @@ app.use(require('webpack-dev-middleware')(compiler, {
     }
 }));
 
-app.use(require('webpack-hot-middleware')(compiler));
+app.use(require('webpack-hot-middleware')(compiler, {
+    log: console.log,
+    path: '/__webpack_hmr',
+    heartbeat: 10 * 1000
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
