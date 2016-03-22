@@ -23,7 +23,7 @@ function entry(options) {
     ];
 
     if (options.env === 'development') {
-        files.unshift('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true');
+        files.unshift('webpack-hot-middleware/client?path=/__webpack_hmr&reload=true');
     }
 
     return files;
@@ -90,13 +90,13 @@ function loaders(options) {
     if (!options.typescript) {
         loaders.push({
             test: /\.js(x)?$/,
-            loaders: ['babel'],
+            loader: 'babel',
             exclude: /node_modules/,
         })
     } else {
         loaders.push({
             test: /\.ts(x)?$/,
-            loaders: ['babel!ts'],
+            loader: 'babel!ts',
             exclude: /node_modules/
         });
     }
