@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "allowJs": true,
+        "sourceMap": true,
+        "jsx": "react",
+        "moduleResolution": "node"
+    },
+    "files": [
+    ],
+    "exclude":[
+        "node_modules",
+        "typings",
+        "public"
+    ],
+    "rootDir": "client/"
+}
