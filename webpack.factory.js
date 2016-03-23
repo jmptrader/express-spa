@@ -41,7 +41,7 @@ function resolve(options) {
 
     return {
         alias: aliases,
-        extensions: ['', '.js', '.ts']
+        extensions: ['', '.js', '.jsx', '.ts', '.tsx']
     }
 }
 
