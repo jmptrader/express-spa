@@ -2,16 +2,14 @@
     "compilerOptions": {
         "target": "es6",
         "allowJs": true,
-        "sourceMap": true,
-        "jsx": "react",
-        "moduleResolution": "node"
+        "jsx": "preserve"
     },
     "files": [
+        "project.d.ts"
     ],
-    "exclude":[
+    "exclude": [
         "node_modules",
         "typings",
         "public"
-    ],
-    "rootDir": "client/"
+    ]
 }
