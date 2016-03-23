@@ -67,6 +67,9 @@ function plugins(options) {
     plugins.push(new webpack.optimize.CommonsChunkPlugin('commons', 'commons.js'));
     plugins.push(new webpack.optimize.OccurenceOrderPlugin());
     plugins.push(new webpack.NoErrorsPlugin());
+    plugins.push(new webpack.DefinePlugin({
+        DEV: options.env === 'development'
+    }));
 
     if (options.env === 'development') {
         plugins.push(new webpack.HotModuleReplacementPlugin());
