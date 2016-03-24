@@ -25,9 +25,9 @@ Add enivronment specific variables as need. Exampes being: database connections,
 credentials or anything else you need to reference through out the application. 
 
 ### Default Variables
-`NODE_ENV=development`
-`MORGAN=combined`
-`TYPESCRIPT=true`
+- `NODE_ENV=development`
+- `MORGAN=combined`
+- `TYPESCRIPT=true`
 
 ## Setup & Usage
 - Node.js must be installed
