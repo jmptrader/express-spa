@@ -13,7 +13,7 @@ your framework of choice.)
 ## Typescript
 Express Spa uses Typescript by default, however based on the library or framework
 of choice the `.d.ts` files need to be installed. For `.d.ts` installs you will
-need (Typings)[https://github.com/typings/typings] installed globally on your development
+need [Typings](https://github.com/typings/typings) installed globally on your development
 machine.
 
 ## .ENV File
@@ -30,7 +30,19 @@ credentials or anything else you need to reference through out the application.
 - `TYPESCRIPT=true`
 
 ## Setup & Usage
-- Node.js must be installed
+
+### NVM
+Express Spa uses [NVM](https://github.com/creationix/nvm) to control specific Node version 
+via the `.nvmrc` file. Whenever a project is started define the Node version that you are 
+planning to use in the `.nvmrc` file. Then upgrade as you needed when your project grows. 
+
+### NPM
+By default Express Spa when an NPM package is installed the exact version will be saved into
+the package.json file. This helps prevent package updates from introducing breaking changes
+into you build. This bahavior is controlled by the `.npmrc` file. 
+
+### Setup
+- Node.js via [NVM](https://github.com/creationix/nvm) must be installed
 - Clone this repo
 - Run `npm setup` - This setup up the project and only need one time.
 - Run `npm start`
