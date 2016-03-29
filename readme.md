@@ -18,15 +18,15 @@ machine.
 
 Any project specific definitions can be add to the `project.d.ts` file. Do not
 remove the definitions that are alreayd included, they are need to make HMR and
-Webpack DefinePlugin work without errors. 
+Webpack DefinePlugin work without errors.
 
 ## .ENV File
 Express Spa uses a `.env` file to handle all environment variables. `.env` file
 are ignored from getting committed into any repo. During the setup command the
 sample `.env.example` file will be copy and renamed to `.env`.
 
-Add enivronment specific variables as need. Exampes being: database connections, API 
-credentials or anything else you need to reference through out the application. 
+Add enivronment specific variables as need. Exampes being: database connections, API
+credentials or anything else you need to reference through out the application.
 
 ### Default Variables
 - `NODE_ENV=development`
@@ -36,25 +36,18 @@ credentials or anything else you need to reference through out the application.
 ## Setup & Usage
 
 ### NVM
-Express Spa uses [NVM](https://github.com/creationix/nvm) to control specific Node version 
-via the `.nvmrc` file. Whenever a project is started define the Node version that you are 
-planning to use in the `.nvmrc` file. Then upgrade as you needed when your project grows. 
+Express Spa uses [NVM](https://github.com/creationix/nvm) to control specific Node version via the `.nvmrc` file. Whenever a project is started define the Node version that you are planning to use in the `.nvmrc` file. Then upgrade as you needed when your project grows.
 
 ### NPM
-By default Express Spa when an NPM package is installed the exact version will be saved into
-the package.json file. This helps prevent package updates from introducing breaking changes
-into you build. This bahavior is controlled by the `.npmrc` file. 
+By default Express Spa when an NPM package is installed the exact version will be saved into the `package.json` file. This helps prevent package updates from introducing breaking changes
+into you build. This bahavior is controlled by the `.npmrc` file.
 
 ### Setup
 - Node.js via [NVM](https://github.com/creationix/nvm) must be installed
 - Clone this repo
 - Run `npm setup` - This setup up the project and only need one time.
 - Run `npm start`
-`npm start` will configure the server based on the variables that are set in the
-
-`.env` file. 
+`npm start` will configure the server based on the variables that are set in the `.env` file.
 
 ## SCSS
-In progress. 
-
-
+In progress.
