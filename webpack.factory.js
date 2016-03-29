@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = function(options) {
     return {
@@ -41,7 +42,7 @@ function resolve(options) {
 
     return {
         alias: aliases,
-        extensions: ['', '.js', '.jsx', '.ts', '.tsx']
+        extensions: ['', '.js', '.jsx', '.ts', '.tsx', '.scss']
     }
 }
 
@@ -64,6 +65,7 @@ function output(options) {
 function plugins(options) {
     var plugins = [];
 
+    plugins.push(new ExtractTextPlugin('[name].css'));
     plugins.push(new webpack.optimize.CommonsChunkPlugin('commons', 'commons.js'));
     plugins.push(new webpack.optimize.OccurenceOrderPlugin());
     plugins.push(new webpack.NoErrorsPlugin());
@@ -103,6 +105,15 @@ function loaders(options) {
             exclude: /node_modules/
         });
     }
+
+    loaders.push({
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style-loader', [
+            'css-loader',
+            'postcss-loader',
+            'sass-loader'
+        ].join('!'))
+    });
 
     return loaders;
 }
