@@ -1,6 +1,8 @@
 var webpack = require('webpack');
 var path = require('path');
+
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var precss = require('precss');
 
 module.exports = function(options) {
     return {
@@ -10,7 +12,9 @@ module.exports = function(options) {
         plugins: plugins(options),
         module: {
             loaders: loaders(options)
-        }
+        },
+        postcss: postcss(options),
+        sassLoader: sassLoader(options)
     }
 };
 
@@ -20,7 +24,8 @@ module.exports = function(options) {
  */
 function entry(options) {
     var files = [
-        './client/index'
+        './client/index',
+        './client/app.scss'
     ];
 
     if (options.env === 'development') {
@@ -42,7 +47,7 @@ function resolve(options) {
 
     return {
         alias: aliases,
-        extensions: ['', '.js', '.jsx', '.ts', '.tsx', '.scss']
+        extensions: ['', '.js', '.jsx', '.ts', '.tsx', '.css', '.scss']
     }
 }
 
@@ -107,7 +112,7 @@ function loaders(options) {
     }
 
     loaders.push({
-        test: /\.scss$/,
+        test: /\.(s)?css$/,
         loader: ExtractTextPlugin.extract('style-loader', [
             'css-loader',
             'postcss-loader',
@@ -116,4 +121,19 @@ function loaders(options) {
     });
 
     return loaders;
+}
+
+function postcss(options) {
+    return [
+        precss
+    ]
+}
+
+function sassLoader(options) {
+    return {
+        data: "$env: " + options.env + ";",
+        includePaths: [
+            path.resolve(__dirname, './styling')
+        ]
+    }
 }
