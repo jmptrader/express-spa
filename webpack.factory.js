@@ -42,13 +42,19 @@ function entry(options) {
     webpack and resolve them automatically.
  */
 function resolve(options) {
+    var extensions = ['', '.js', '.jsx', '.css', '.scss']
+    if (options.typescript) {
+        extensions.push('.ts');
+        extensions.push('.tsx');
+    }
+
     var aliases = {};
 
     // aliases[folder] = path.join(__dirname, 'path', 'to', 'folder');
 
     return {
         alias: aliases,
-        extensions: ['', '.js', '.jsx', '.ts', '.tsx', '.css', '.scss']
+        extensions: extensions
     }
 }
 
@@ -124,6 +130,12 @@ function loaders(options) {
     return loaders;
 }
 
+/*
+    PostCSS Loader
+    Autoperfixes any CSS, project browser support must be defined.
+    Also allows the use of CSSNext. http://cssnext.io/ with plain
+    CSS files.
+ */
 function postcss(options) {
     return {
         defaults: [precss, autoprefixer],
@@ -133,6 +145,12 @@ function postcss(options) {
     }
 }
 
+/*
+    SASS Loader
+    Defines the environement variable from the .env as a SASS variable
+    that can be used. Looks in the sytling directory to resolve any
+    import statements. 
+ */
 function sassLoader(options) {
     return {
         data: "$env: " + options.env + ";",
