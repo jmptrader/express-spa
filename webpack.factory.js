@@ -3,6 +3,7 @@ var path = require('path');
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var precss = require('precss');
+var autoprefixer = require('autoprefixer');
 
 module.exports = function(options) {
     return {
@@ -70,7 +71,7 @@ function output(options) {
 function plugins(options) {
     var plugins = [];
 
-    plugins.push(new ExtractTextPlugin('[name].css'));
+    plugins.push(new ExtractTextPlugin('styles.css'));
     plugins.push(new webpack.optimize.CommonsChunkPlugin('commons', 'commons.js'));
     plugins.push(new webpack.optimize.OccurenceOrderPlugin());
     plugins.push(new webpack.NoErrorsPlugin());
@@ -113,10 +114,10 @@ function loaders(options) {
 
     loaders.push({
         test: /\.(s)?css$/,
-        loader: ExtractTextPlugin.extract('style-loader', [
-            'css-loader',
-            'postcss-loader',
-            'sass-loader'
+        loader: ExtractTextPlugin.extract('style', [
+            'css',
+            'postcss',
+            'sass'
         ].join('!'))
     });
 
@@ -124,9 +125,12 @@ function loaders(options) {
 }
 
 function postcss(options) {
-    return [
-        precss
-    ]
+    return {
+        defaults: [precss, autoprefixer],
+        cleaner: [autoprefixer({
+            browsers: []
+        })]
+    }
 }
 
 function sassLoader(options) {
