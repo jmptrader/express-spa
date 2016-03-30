@@ -12,6 +12,7 @@ module.exports = function(options) {
         output: output(options),
         plugins: plugins(options),
         module: {
+            preLoaders: preloaders(options),
             loaders: loaders(options)
         },
         postcss: postcss(options),
@@ -80,7 +81,6 @@ function plugins(options) {
     plugins.push(new ExtractTextPlugin('styles.css'));
     plugins.push(new webpack.optimize.CommonsChunkPlugin('commons', 'commons.js'));
     plugins.push(new webpack.optimize.OccurenceOrderPlugin());
-    plugins.push(new webpack.NoErrorsPlugin());
     plugins.push(new webpack.DefinePlugin({
         DEV: options.env === 'development'
     }));
@@ -97,7 +97,24 @@ function plugins(options) {
 }
 
 /*
-    Returns Loaders Objects
+    Returns Preloaders Array
+ */
+function preloaders(options) {
+    var preloaders = [];
+
+    if(!options.typescript) {
+        preloaders.push({
+            test: /\.js(x)?$/,
+            loader: 'eslint',
+            exclude: /node_modules/,
+        })
+    }
+
+    return preloaders;
+}
+
+/*
+    Returns Loaders Array
     Typescript is enabled by default
     Babel Preset are defined in the package.json file.
  */
@@ -109,7 +126,7 @@ function loaders(options) {
             test: /\.js(x)?$/,
             loader: 'babel',
             exclude: /node_modules/,
-        })
+        });
     } else {
         loaders.push({
             test: /\.ts(x)?$/,
@@ -124,7 +141,7 @@ function loaders(options) {
             'css',
             'postcss',
             'sass'
-        ].join('!'))
+        ].join('!'));
     });
 
     return loaders;
@@ -149,7 +166,7 @@ function postcss(options) {
     SASS Loader
     Defines the environement variable from the .env as a SASS variable
     that can be used. Looks in the sytling directory to resolve any
-    import statements. 
+    import statements.
  */
 function sassLoader(options) {
     return {
