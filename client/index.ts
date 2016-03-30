@@ -1,4 +1,4 @@
-require('./apps.scss');
+require('./app.scss');
 
 function greeter(person: string) {
     return "Hello, " + person;
