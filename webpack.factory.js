@@ -1,6 +1,10 @@
 var webpack = require('webpack');
 var path = require('path');
 
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var precss = require('precss');
+var autoprefixer = require('autoprefixer');
+
 module.exports = function(options) {
     return {
         entry: entry(options),
@@ -9,7 +13,9 @@ module.exports = function(options) {
         plugins: plugins(options),
         module: {
             loaders: loaders(options)
-        }
+        },
+        postcss: postcss(options),
+        sassLoader: sassLoader(options)
     }
 };
 
@@ -19,7 +25,8 @@ module.exports = function(options) {
  */
 function entry(options) {
     var files = [
-        './client/index'
+        './client/index',
+        './client/app.scss'
     ];
 
     if (options.env === 'development') {
@@ -35,13 +42,19 @@ function entry(options) {
     webpack and resolve them automatically.
  */
 function resolve(options) {
+    var extensions = ['', '.js', '.jsx', '.css', '.scss']
+    if (options.typescript) {
+        extensions.push('.ts');
+        extensions.push('.tsx');
+    }
+
     var aliases = {};
 
     // aliases[folder] = path.join(__dirname, 'path', 'to', 'folder');
 
     return {
         alias: aliases,
-        extensions: ['', '.js', '.jsx', '.ts', '.tsx']
+        extensions: extensions
     }
 }
 
@@ -64,6 +77,7 @@ function output(options) {
 function plugins(options) {
     var plugins = [];
 
+    plugins.push(new ExtractTextPlugin('styles.css'));
     plugins.push(new webpack.optimize.CommonsChunkPlugin('commons', 'commons.js'));
     plugins.push(new webpack.optimize.OccurenceOrderPlugin());
     plugins.push(new webpack.NoErrorsPlugin());
@@ -104,5 +118,44 @@ function loaders(options) {
         });
     }
 
+    loaders.push({
+        test: /\.(s)?css$/,
+        loader: ExtractTextPlugin.extract('style', [
+            'css',
+            'postcss',
+            'sass'
+        ].join('!'))
+    });
+
     return loaders;
+}
+
+/*
+    PostCSS Loader
+    Autoperfixes any CSS, project browser support must be defined.
+    Also allows the use of CSSNext. http://cssnext.io/ with plain
+    CSS files.
+ */
+function postcss(options) {
+    return {
+        defaults: [precss, autoprefixer],
+        cleaner: [autoprefixer({
+            browsers: []
+        })]
+    }
+}
+
+/*
+    SASS Loader
+    Defines the environement variable from the .env as a SASS variable
+    that can be used. Looks in the sytling directory to resolve any
+    import statements. 
+ */
+function sassLoader(options) {
+    return {
+        data: "$env: " + options.env + ";",
+        includePaths: [
+            path.resolve(__dirname, './styling')
+        ]
+    }
 }
