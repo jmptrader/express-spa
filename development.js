@@ -2,7 +2,7 @@
 
 import express from 'express';
 import morgan from 'morgan';
-import path from 'path';
+import {join} from 'path';
 import webpack from 'webpack';
 
 const app = express();
@@ -32,10 +32,10 @@ app.use(require('webpack-hot-middleware')(compiler, {
     heartbeat: 10 * 1000
 }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(join(__dirname, 'public')));
 
 app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(join(__dirname, 'public', 'index.html'));
 });
 
 http.listen(port, (error) => {

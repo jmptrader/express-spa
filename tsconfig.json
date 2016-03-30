@@ -2,10 +2,13 @@
     "compilerOptions": {
         "target": "es6",
         "allowJs": true,
-        "jsx": "preserve"
+        "jsx": "preserve",
+        "experimentalDecorators": true,
+        "module": "commonjs"
     },
     "files": [
-        "project.d.ts"
+        "project.d.ts",
+        "typings/main.d.ts"
     ],
     "exclude": [
         "node_modules",

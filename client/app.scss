@@ -1,0 +1,9 @@
+@import 'base';
+
+body {
+  @if $env == development {
+    background: $dev-bg
+  } @else {
+    background: $prod-bg
+  }
+}
