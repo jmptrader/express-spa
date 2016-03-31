@@ -1,22 +1,26 @@
-var webpack = require('webpack');
-var path = require('path');
+const webpack = require('webpack');
+const path = require('path');
 
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var precss = require('precss');
-var autoprefixer = require('autoprefixer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const precss = require('precss');
+const autoprefixer = require('autoprefixer');
 
-module.exports = function(options) {
+/*
+    Webpack Factory Exports Object
+ */
+module.exports = function(options) { // eslint-disable-line
     return {
         entry: entry(options),
         resolve: resolve(options),
-        output: output(options),
+        output: output(),
         plugins: plugins(options),
         module: {
+            preLoaders: preloaders(options),
             loaders: loaders(options)
         },
-        postcss: postcss(options),
+        postcss: postcss(),
         sassLoader: sassLoader(options)
-    }
+    };
 };
 
 /*
@@ -24,7 +28,7 @@ module.exports = function(options) {
  Additional Entry Files can be defined in the Files Array
  */
 function entry(options) {
-    var files = [
+    const files = [
         './client/index',
         './client/app.scss'
     ];
@@ -42,31 +46,32 @@ function entry(options) {
     webpack and resolve them automatically.
  */
 function resolve(options) {
-    var extensions = ['', '.js', '.jsx', '.css', '.scss']
+    const extensions = ['', '.js', '.jsx', '.css', '.scss'];
+
     if (options.typescript) {
         extensions.push('.ts');
         extensions.push('.tsx');
     }
 
-    var aliases = {};
+    const aliases = {};
 
     // aliases[folder] = path.join(__dirname, 'path', 'to', 'folder');
 
     return {
         alias: aliases,
-        extensions: extensions
-    }
+        extensions: extensions // eslint-disable-line
+    };
 }
 
 /*
-    Returns Webpack's Output Object configuation
+    Returns Webpack's Output Object Configuation
  */
-function output(options) {
+function output() {
     return {
         path: path.join(__dirname, 'public'),
         filename: 'app.js',
         publicPath: '/assets/'
-    }
+    };
 }
 
 /*
@@ -75,12 +80,11 @@ function output(options) {
     https://github.com/webpack/extract-text-webpack-plugin/blob/master/example/webpack.config.js
  */
 function plugins(options) {
-    var plugins = [];
+    const plugins = []; // eslint-disable-line
 
     plugins.push(new ExtractTextPlugin('styles.css'));
     plugins.push(new webpack.optimize.CommonsChunkPlugin('commons', 'commons.js'));
     plugins.push(new webpack.optimize.OccurenceOrderPlugin());
-    plugins.push(new webpack.NoErrorsPlugin());
     plugins.push(new webpack.DefinePlugin({
         DEV: options.env === 'development'
     }));
@@ -97,19 +101,36 @@ function plugins(options) {
 }
 
 /*
-    Returns Loaders Objects
+    Returns Preloaders Array
+ */
+function preloaders(options) {
+    const preloaders = []; // eslint-disable-line
+
+    if (!options.typescript) {
+        preloaders.push({
+            test: /\.js(x)?$/,
+            loader: 'eslint',
+            exclude: /node_modules/
+        });
+    }
+
+    return preloaders;
+}
+
+/*
+    Returns Loaders Array
     Typescript is enabled by default
     Babel Preset are defined in the package.json file.
  */
 function loaders(options) {
-    var loaders = [];
+    const loaders = []; // eslint-disable-line
 
     if (!options.typescript) {
         loaders.push({
             test: /\.js(x)?$/,
             loader: 'babel',
-            exclude: /node_modules/,
-        })
+            exclude: /node_modules/
+        });
     } else {
         loaders.push({
             test: /\.ts(x)?$/,
@@ -136,26 +157,26 @@ function loaders(options) {
     Also allows the use of CSSNext. http://cssnext.io/ with plain
     CSS files.
  */
-function postcss(options) {
+function postcss() {
     return {
         defaults: [precss, autoprefixer],
         cleaner: [autoprefixer({
             browsers: []
         })]
-    }
+    };
 }
 
 /*
     SASS Loader
     Defines the environement variable from the .env as a SASS variable
     that can be used. Looks in the sytling directory to resolve any
-    import statements. 
+    import statements.
  */
 function sassLoader(options) {
     return {
-        data: "$env: " + options.env + ";",
+        data: '$env: ' + options.env + ';',
         includePaths: [
             path.resolve(__dirname, './styling')
         ]
-    }
+    };
 }
