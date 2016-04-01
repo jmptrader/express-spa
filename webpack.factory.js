@@ -1,14 +1,17 @@
-const webpack = require('webpack');
-const path = require('path');
+import webpack from 'webpack';
+import path from 'path';
+import fs from 'fs';
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const precss = require('precss');
-const autoprefixer = require('autoprefixer');
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import precss from 'precss';
+import autoprefixer from 'autoprefixer';
 
 /*
     Webpack Factory Exports Object
+    This will configre Webpack for builds and development based on the options
+    object.
  */
-module.exports = function(options) { // eslint-disable-line
+module.exports = (options) => {
     return {
         entry: entry(options),
         resolve: resolve(options),
@@ -42,24 +45,29 @@ function entry(options) {
 
 /*
     Returns Webpack Resolve Object configuation
-    TODO: Globbing directories in the clients folder to the alias object so
-    webpack and resolve them automatically.
+    Resolves any directory that is in the client directory so they can be imported
+    without '../' or `./`. This only works for children directories inside the
+    client directory.
  */
 function resolve(options) {
+    const alias = {};
     const extensions = ['', '.js', '.jsx', '.css', '.scss'];
+    const directories = getDirectories('./client');
 
     if (options.typescript) {
         extensions.push('.ts');
         extensions.push('.tsx');
     }
 
-    const aliases = {};
-
-    // aliases[folder] = path.join(__dirname, 'path', 'to', 'folder');
+    if (directories.length > 0) {
+        directories.forEach((directory) => {
+            alias[directory] = path.join(__dirname, 'client', directory);
+        });
+    }
 
     return {
-        alias: aliases,
-        extensions: extensions // eslint-disable-line
+        alias,
+        extensions
     };
 }
 
@@ -76,8 +84,6 @@ function output() {
 
 /*
     Return Plugins based on Environment
-    TODO: implement SASS compiling
-    https://github.com/webpack/extract-text-webpack-plugin/blob/master/example/webpack.config.js
  */
 function plugins(options) {
     const plugins = []; // eslint-disable-line
@@ -120,7 +126,7 @@ function preloaders(options) {
 /*
     Returns Loaders Array
     Typescript is enabled by default
-    Babel Preset are defined in the package.json file.
+    Babel Presets are defined in the package.json file.
  */
 function loaders(options) {
     const loaders = []; // eslint-disable-line
@@ -176,7 +182,16 @@ function sassLoader(options) {
     return {
         data: '$env: ' + options.env + ';',
         includePaths: [
-            path.resolve(__dirname, './styling')
+            path.resolve(__dirname, 'styling')
         ]
     };
+}
+
+/*
+    Util Functions
+ */
+function getDirectories(srcpath) {
+    return fs.readdirSync(srcpath).filter((file) => {
+        return fs.statSync(path.join(srcpath, file)).isDirectory();
+    });
 }
